@@ -15,6 +15,7 @@
  */
 
 import { Cluster } from "./cluster";
+import { MyMarker } from "./markerclusterer";
 
 /**
  * Provides statistics on all clusters in the current render cycle for use in {@link Renderer.render}.
@@ -31,7 +32,7 @@ export class ClusterStats {
     };
   };
 
-  constructor(markers: google.maps.Marker[], clusters: Cluster[]) {
+  constructor(markers: MyMarker[], clusters: Cluster[]) {
     this.markers = { sum: markers.length };
 
     const clusterMarkerCounts = clusters.map((a) => a.count);
@@ -51,18 +52,18 @@ export class ClusterStats {
 
 export interface Renderer {
   /**
-   * Turn a {@link Cluster} into a `google.maps.Marker`.
+   * Turn a {@link Cluster} into a `MyMarker`.
    *
    * Below is a simple example to create a marker with the number of markers in the cluster as a label.
    *
    * ```typescript
-   * return new google.maps.Marker({
+   * return new MyMarker({
    *   position,
    *   label: String(markers.length),
    * });
    * ```
    */
-  render(cluster: Cluster, stats: ClusterStats): google.maps.Marker;
+  render(cluster: Cluster, stats: ClusterStats): MyMarker;
 }
 
 export class DefaultRenderer implements Renderer {
@@ -88,7 +89,7 @@ export class DefaultRenderer implements Renderer {
    * </svg>`);
    *
    * // create marker using svg icon
-   * return new google.maps.Marker({
+   * return new MyMarker({
    *   position,
    *   icon: {
    *     url: `data:image/svg+xml;base64,${svg}`,
@@ -104,10 +105,7 @@ export class DefaultRenderer implements Renderer {
    * });
    * ```
    */
-  public render(
-    { count, position }: Cluster,
-    stats: ClusterStats
-  ): google.maps.Marker {
+  public render({ count, position }: Cluster, stats: ClusterStats): MyMarker {
     // change color if this cluster has more markers than the mean cluster
     const color =
       count > Math.max(10, stats.clusters.markers.mean) ? "#ff0000" : "#0000ff";
@@ -121,7 +119,7 @@ export class DefaultRenderer implements Renderer {
   </svg>`);
 
     // create marker using svg icon
-    return new google.maps.Marker({
+    return new MyMarker({
       position,
       icon: {
         url: `data:image/svg+xml;base64,${svg}`,
@@ -134,7 +132,7 @@ export class DefaultRenderer implements Renderer {
       },
       title: `Cluster of ${count} markers`,
       // adjust zIndex to be above other markers
-      zIndex: Number(google.maps.Marker.MAX_ZINDEX) + count,
+      zIndex: Number(MyMarker.MAX_ZINDEX) + count,
     });
   }
 }

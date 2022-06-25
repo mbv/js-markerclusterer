@@ -19,6 +19,7 @@ import SuperCluster, { ClusterFeature } from "supercluster";
 
 import { Cluster } from "../cluster";
 import equal from "fast-deep-equal";
+import { MyMarker } from "../markerclusterer";
 
 export type SuperClusterOptions = SuperCluster.Options<
   { [name: string]: any },
@@ -32,7 +33,7 @@ export type SuperClusterOptions = SuperCluster.Options<
  */
 export class SuperClusterAlgorithm extends AbstractAlgorithm {
   protected superCluster: SuperCluster;
-  protected markers: google.maps.Marker[];
+  protected markers: MyMarker[];
   protected clusters: Cluster[];
   protected state: { zoom: number };
 
@@ -102,7 +103,7 @@ export class SuperClusterAlgorithm extends AbstractAlgorithm {
       coordinates: [lng, lat],
     },
     properties,
-  }: ClusterFeature<{ marker: google.maps.Marker }>): Cluster {
+  }: ClusterFeature<{ marker: MyMarker }>): Cluster {
     if (properties.cluster) {
       return new Cluster({
         markers: this.superCluster

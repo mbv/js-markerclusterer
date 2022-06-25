@@ -16,6 +16,7 @@
 
 import { Cluster } from "./cluster";
 import { initialize } from "@googlemaps/jest-mocks";
+import { MyMarker } from "./markerclusterer";
 
 beforeEach(() => {
   initialize();
@@ -32,26 +33,26 @@ test("bounds should be undefined if position", () => {
 });
 
 test("bounds should be undefined if markers", () => {
-  const cluster = new Cluster({ markers: [new google.maps.Marker()] });
+  const cluster = new Cluster({ markers: [new MyMarker()] });
   expect(cluster.bounds).toBeDefined();
 });
 
 test("can push additional markers", () => {
   const cluster = new Cluster({ markers: [] });
-  cluster.push(new google.maps.Marker());
+  cluster.push(new MyMarker());
   expect(cluster["markers"].length).toBe(1);
 });
 
 test("count visible markers", () => {
-  const cluster = new Cluster({ markers: [new google.maps.Marker()] });
+  const cluster = new Cluster({ markers: [new MyMarker()] });
   cluster["markers"][0].getVisible = jest.fn().mockReturnValue(true);
   expect(cluster["markers"].length).toBe(1);
 });
 
 test("delete if marker set", () => {
-  const cluster = new Cluster({ markers: [new google.maps.Marker()] });
+  const cluster = new Cluster({ markers: [new MyMarker()] });
   cluster["markers"][0].getVisible = jest.fn().mockReturnValue(true);
-  cluster.marker = new google.maps.Marker();
+  cluster.marker = new MyMarker();
   expect(cluster.count).toBe(1);
   cluster.delete();
   expect(cluster.count).toBe(0);

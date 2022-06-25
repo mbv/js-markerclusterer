@@ -16,6 +16,7 @@
 
 import { initialize } from "@googlemaps/jest-mocks";
 import { noop } from "./core";
+import { MyMarker } from "../markerclusterer";
 
 beforeEach(() => {
   initialize();
@@ -23,7 +24,5 @@ beforeEach(() => {
 
 test("noop should return equivalent number of clusters", () => {
   expect(noop([]).length).toBe(0);
-  expect(
-    noop([new google.maps.Marker({}), new google.maps.Marker({})]).length
-  ).toBe(2);
+  expect(noop([new MyMarker({}), new MyMarker({})]).length).toBe(2);
 });

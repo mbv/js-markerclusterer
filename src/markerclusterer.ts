@@ -26,7 +26,7 @@ export type onClusterClickHandler = (
   map: google.maps.Map
 ) => void;
 export interface MarkerClustererOptions {
-  markers?: google.maps.Marker[];
+  markers?: MyMarker[];
   /**
    * An algorithm to cluster markers. Default is {@link SuperClusterAlgorithm}. Must
    * provide a `calculate` method accepting {@link AlgorithmInput} and returning
@@ -35,7 +35,7 @@ export interface MarkerClustererOptions {
   algorithm?: Algorithm;
   map?: google.maps.Map | null;
   /**
-   * An object that converts a {@link Cluster} into a `google.maps.Marker`.
+   * An object that converts a {@link Cluster} into a `MyMarker`.
    * Default is {@link DefaultRenderer}.
    */
   renderer?: Renderer;
@@ -55,6 +55,21 @@ export const defaultOnClusterClickHandler: onClusterClickHandler = (
 ): void => {
   map.fitBounds(cluster.bounds);
 };
+interface MyMarkerOptions extends google.maps.MarkerOptions {
+  rate?: number | null;
+}
+
+export class MyMarker extends google.maps.Marker {
+  private readonly rate?: number | null;
+  constructor(opts?: MyMarkerOptions | null) {
+    super(opts);
+    this.rate = opts.rate;
+  }
+
+  public getRate(): number | null | undefined {
+    return this.rate;
+  }
+}
 /**
  * MarkerClusterer creates and manages per-zoom-level clusters for large amounts
  * of markers. See {@link MarkerClustererOptions} for more details.
@@ -66,7 +81,7 @@ export class MarkerClusterer extends OverlayViewSafe {
   /** @see {@link MarkerClustererOptions.algorithm} */
   protected algorithm: Algorithm;
   protected clusters: Cluster[];
-  protected markers: google.maps.Marker[];
+  protected markers: MyMarker[];
   /** @see {@link MarkerClustererOptions.renderer} */
   protected renderer: Renderer;
   /** @see {@link MarkerClustererOptions.map} */
@@ -95,7 +110,7 @@ export class MarkerClusterer extends OverlayViewSafe {
     }
   }
 
-  public addMarker(marker: google.maps.Marker, noDraw?: boolean): void {
+  public addMarker(marker: MyMarker, noDraw?: boolean): void {
     if (this.markers.includes(marker)) {
       return;
     }
@@ -106,7 +121,7 @@ export class MarkerClusterer extends OverlayViewSafe {
     }
   }
 
-  public addMarkers(markers: google.maps.Marker[], noDraw?: boolean): void {
+  public addMarkers(markers: MyMarker[], noDraw?: boolean): void {
     markers.forEach((marker) => {
       this.addMarker(marker, true);
     });
@@ -116,7 +131,7 @@ export class MarkerClusterer extends OverlayViewSafe {
     }
   }
 
-  public removeMarker(marker: google.maps.Marker, noDraw?: boolean): boolean {
+  public removeMarker(marker: MyMarker, noDraw?: boolean): boolean {
     const index = this.markers.indexOf(marker);
 
     if (index === -1) {
@@ -134,10 +149,7 @@ export class MarkerClusterer extends OverlayViewSafe {
     return true;
   }
 
-  public removeMarkers(
-    markers: google.maps.Marker[],
-    noDraw?: boolean
-  ): boolean {
+  public removeMarkers(markers: MyMarker[], noDraw?: boolean): boolean {
     let removed = false;
 
     markers.forEach((marker) => {

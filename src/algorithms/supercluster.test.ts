@@ -16,6 +16,7 @@
 
 import { SuperClusterAlgorithm } from "./supercluster";
 import { initialize } from "@googlemaps/jest-mocks";
+import { MyMarker } from "../markerclusterer";
 
 let map: google.maps.Map;
 
@@ -28,7 +29,7 @@ beforeEach(() => {
 test("should only call load if markers change", () => {
   const mapCanvasProjection =
     jest.fn() as unknown as google.maps.MapCanvasProjection;
-  const markers: google.maps.Marker[] = [new google.maps.Marker()];
+  const markers: MyMarker[] = [new MyMarker()];
 
   const superCluster = new SuperClusterAlgorithm({});
   superCluster["superCluster"].load = jest.fn();
@@ -49,10 +50,7 @@ test("should only call load if markers change", () => {
 test("should cluster markers", () => {
   const mapCanvasProjection =
     jest.fn() as unknown as google.maps.MapCanvasProjection;
-  const markers: google.maps.Marker[] = [
-    new google.maps.Marker(),
-    new google.maps.Marker(),
-  ];
+  const markers: MyMarker[] = [new MyMarker(), new MyMarker()];
 
   const superCluster = new SuperClusterAlgorithm({});
   map.getZoom = jest.fn().mockReturnValue(0);
@@ -75,7 +73,7 @@ test("should cluster markers", () => {
 
 test("should transform to Cluster with single marker if not cluster", () => {
   const superCluster = new SuperClusterAlgorithm({});
-  const marker = new google.maps.Marker();
+  const marker = new MyMarker();
 
   const cluster = superCluster["transformCluster"]({
     type: "Feature",
@@ -95,10 +93,7 @@ test("should transform to Cluster with single marker if not cluster", () => {
 test("should not cluster if zoom didn't change", () => {
   const mapCanvasProjection =
     jest.fn() as unknown as google.maps.MapCanvasProjection;
-  const markers: google.maps.Marker[] = [
-    new google.maps.Marker(),
-    new google.maps.Marker(),
-  ];
+  const markers: MyMarker[] = [new MyMarker(), new MyMarker()];
 
   const superCluster = new SuperClusterAlgorithm({});
   superCluster["markers"] = markers;
@@ -121,10 +116,7 @@ test("should not cluster if zoom didn't change", () => {
 test("should not cluster if zoom beyond maxZoom", () => {
   const mapCanvasProjection =
     jest.fn() as unknown as google.maps.MapCanvasProjection;
-  const markers: google.maps.Marker[] = [
-    new google.maps.Marker(),
-    new google.maps.Marker(),
-  ];
+  const markers: MyMarker[] = [new MyMarker(), new MyMarker()];
 
   const superCluster = new SuperClusterAlgorithm({});
   superCluster["markers"] = markers;
@@ -147,7 +139,7 @@ test("should not cluster if zoom beyond maxZoom", () => {
 test("should round fractional zoom", () => {
   const mapCanvasProjection =
     jest.fn() as unknown as google.maps.MapCanvasProjection;
-  const markers: google.maps.Marker[] = [];
+  const markers: MyMarker[] = [];
 
   const superCluster = new SuperClusterAlgorithm({});
   superCluster["superCluster"].getClusters = jest.fn().mockReturnValue([]);

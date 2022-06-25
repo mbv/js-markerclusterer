@@ -37,7 +37,7 @@ const interpolatedRenderer = {
   render: function (
     { count, position }: Cluster,
     stats: ClusterStats
-  ): google.maps.Marker {
+  ): MyMarker {
     // use d3-interpolateRgb to interpolate between red and blue
     const color = this.palette(count / stats.clusters.markers.max);
 
@@ -48,7 +48,7 @@ const interpolatedRenderer = {
   </svg>`);
 
     // create marker using svg icon
-    return new google.maps.Marker({
+    return new MyMarker({
       position,
       icon: {
         url: `data:image/svg+xml;base64,${svg}`,
@@ -60,7 +60,7 @@ const interpolatedRenderer = {
         fontSize: "12px",
       },
       // adjust zIndex to be above other markers
-      zIndex: Number(google.maps.Marker.MAX_ZINDEX) + count,
+      zIndex: Number(MyMarker.MAX_ZINDEX) + count,
     });
   },
 };
@@ -78,11 +78,11 @@ new Loader(LOADER_OPTIONS).load().then(() => {
       document.getElementById("simple"),
       {
         render: ({ count, position }: Cluster) =>
-          new google.maps.Marker({
+          new MyMarker({
             label: { text: String(count), color: "white", fontSize: "10px" },
             position,
             // adjust zIndex to be above other markers
-            zIndex: Number(google.maps.Marker.MAX_ZINDEX) + count,
+            zIndex: Number(MyMarker.MAX_ZINDEX) + count,
           }),
       },
       null,
@@ -109,7 +109,7 @@ new Loader(LOADER_OPTIONS).load().then(() => {
 
     const markers = trees.map(
       ({ geometry }) =>
-        new google.maps.Marker({
+        new MyMarker({
           position: {
             lat: geometry.coordinates[1],
             lng: geometry.coordinates[0],

@@ -1,3 +1,5 @@
+import { MyMarker } from "../markerclusterer";
+
 /**
  * Copyright 2021 Google LLC
  *
@@ -17,9 +19,9 @@
 export const filterMarkersToPaddedViewport = (
   map: google.maps.Map,
   mapCanvasProjection: google.maps.MapCanvasProjection,
-  markers: google.maps.Marker[],
+  markers: MyMarker[],
   viewportPadding: number
-): google.maps.Marker[] => {
+): MyMarker[] => {
   const extendedMapBounds = extendBoundsToPaddedViewport(
     map.getBounds(),
     mapCanvasProjection,

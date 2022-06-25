@@ -112,7 +112,7 @@ export class GridAlgorithm extends AbstractViewportAlgorithm {
   }
 
   protected addToClosestCluster(
-    marker: google.maps.Marker,
+    marker: MyMarker,
     map: google.maps.Map,
     projection: google.maps.MapCanvasProjection
   ): void {
@@ -150,9 +150,9 @@ export class GridAlgorithm extends AbstractViewportAlgorithm {
   protected filterMarkersToPaddedViewport(
     map: google.maps.Map,
     mapCanvasProjection: google.maps.MapCanvasProjection,
-    markers: google.maps.Marker[],
+    markers: MyMarker[],
     viewportPadding: number
-  ): google.maps.Marker[] {
+  ): MyMarker[] {
     return filterMarkersToPaddedViewport(
       map,
       mapCanvasProjection,

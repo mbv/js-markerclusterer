@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { MyMarker } from "./markerclusterer";
 
 export interface ClusterOptions {
   position?: google.maps.LatLng | google.maps.LatLngLiteral;
-  markers?: google.maps.Marker[];
+  markers?: MyMarker[];
 }
 
 export class Cluster {
-  public marker: google.maps.Marker;
-  public readonly markers?: google.maps.Marker[];
+  public marker: MyMarker;
+  public readonly markers?: MyMarker[];
   protected _position: google.maps.LatLng;
 
   constructor({ markers, position }: ClusterOptions) {
@@ -54,14 +55,13 @@ export class Cluster {
    * Get the count of **visible** markers.
    */
   public get count(): number {
-    return this.markers.filter((m: google.maps.Marker) => m.getVisible())
-      .length;
+    return this.markers.filter((m: MyMarker) => m.getVisible()).length;
   }
 
   /**
    * Add a marker to the cluster.
    */
-  public push(marker: google.maps.Marker): void {
+  public push(marker: MyMarker): void {
     this.markers.push(marker);
   }
 

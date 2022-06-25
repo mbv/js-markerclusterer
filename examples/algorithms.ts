@@ -64,7 +64,7 @@ new Loader(LOADER_OPTIONS).load().then(() => {
 
     const markers = trees.map(
       ({ geometry }) =>
-        new google.maps.Marker({
+        new MyMarker({
           position: {
             lat: geometry.coordinates[1],
             lng: geometry.coordinates[0],
